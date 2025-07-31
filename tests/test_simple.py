@@ -29,4 +29,5 @@ class TestSimple:
     @pytest.mark.slow
     def test_marked_test(self):
         """带有标记的测试用例"""
-        assert True 
+        result = 2 + 1
+        assert result == 2, f"预期结果为2，实际结果为{result}"
