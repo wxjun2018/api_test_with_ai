@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>API Documentation</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        h1 {
+            color: #2c3e50;
+            border-bottom: 2px solid #eee;
+            padding-bottom: 10px;
+        }
+
+        h2 {
+            color: #2980b9;
+            margin-top: 40px;
+        }
+
+        h3 {
+            color: #27ae60;
+            margin-top: 30px;
+        }
+
+        h4 {
+            color: #8e44ad;
+            margin-top: 20px;
+        }
+
+        .method {
+            display: inline-block;
+            padding: 4px 8px;
+            border-radius: 4px;
+            color: white;
+            font-weight: bold;
+            margin-right: 10px;
+        }
+
+        .get {
+            background-color: #27ae60;
+        }
+
+        .post {
+            background-color: #2980b9;
+        }
+
+        .put {
+            background-color: #f39c12;
+        }
+
+        .delete {
+            background-color: #c0392b;
+        }
+
+        .patch {
+            background-color: #8e44ad;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+
+        th,
+        td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #f8f9fa;
+        }
+
+        pre {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 4px;
+            overflow-x: auto;
+        }
+
+        code {
+            font-family: Monaco, Consolas, "Courier New", monospace;
+        }
+
+        .endpoint {
+            background-color: #f8f9fa;
+            padding: 20px;
+            border-radius: 4px;
+            margin: 20px 0;
+        }
+
+        .status-code {
+            display: inline-block;
+            padding: 4px 8px;
+            border-radius: 4px;
+            background-color: #dff0d8;
+            color: #3c763d;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>API Documentation</h1>
+    <p>Generated at {{ now() }}</p>
+
+    {% for api in apis %}
+    <div class="endpoint">
+        <h2>
+            <span class="method {{ api.method.lower() }}">{{ api.method }}</span>
+            {{ api.path }}
+        </h2>
+
+        <p>{{ api.description }}</p>
+
+        <h3>Request</h3>
+
+        {% if api.request.headers %}
+        <h4>Headers</h4>
+        <table>
+            <tr>
+                <th>Name</th>
+                <th>Type</th>
+                <th>Required</th>
+                <th>Example</th>
+            </tr>
+            {% for name, header in api.request.headers.items() %}
+            <tr>
+                <td>{{ name }}</td>
+                <td>{{ header.type }}</td>
+                <td>{{ header.required }}</td>
+                <td><code>{{ header.example }}</code></td>
+            </tr>
+            {% endfor %}
+        </table>
+        {% endif %}
+
+        {% if api.request.query_params and api.request.query_params.properties %}
+        <h4>Query Parameters</h4>
+        <table>
+            <tr>
+                <th>Name</th>
+                <th>Type</th>
+                <th>Example</th>
+            </tr>
+            {% for name, param in api.request.query_params.properties.items() %}
+            <tr>
+                <td>{{ name }}</td>
+                <td>{{ param.type }}</td>
+                <td><code>{{ param.example }}</code></td>
+            </tr>
+            {% endfor %}
+        </table>
+        {% endif %}
+
+        {% if api.request.body %}
+        <h4>Request Body</h4>
+        <pre><code>{{ api.request.body | tojson(indent=2) }}</code></pre>
+        {% endif %}
+
+        <h3>Response</h3>
+
+        <p>Status Code: <span class="status-code">{{ api.response.status_code }}</span></p>
+
+        {% if api.response.headers %}
+        <h4>Headers</h4>
+        <table>
+            <tr>
+                <th>Name</th>
+                <th>Type</th>
+                <th>Required</th>
+                <th>Example</th>
+            </tr>
+            {% for name, header in api.response.headers.items() %}
+            <tr>
+                <td>{{ name }}</td>
+                <td>{{ header.type }}</td>
+                <td>{{ header.required }}</td>
+                <td><code>{{ header.example }}</code></td>
+            </tr>
+            {% endfor %}
+        </table>
+        {% endif %}
+
+        {% if api.response.body %}
+        <h4>Response Body</h4>
+        <pre><code>{{ api.response.body | tojson(indent=2) }}</code></pre>
+        {% endif %}
+    </div>
+    {% endfor %}
+</body>
+
+</html>

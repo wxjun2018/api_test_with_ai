@@ -1,0 +1,29 @@
+# 忽略日志文件
+*.log
+
+# 忽略临时文件
+*.tmp
+*.swp
+*.bak
+*.DS_Store
+Thumbs.db
+allure-results/
+allure-report/
+.pytest_cache/
+storage/
+logs/
+
+# 忽略IDE配置文件
+.vscode/
+.idea/
+*.iml
+
+# 忽略node_modules（前端项目）
+frontend/node_modules/
+
+# 忽略Python虚拟环境
+venv/
+venv1/
+venv3.9/
+.env
+__pycache__/
